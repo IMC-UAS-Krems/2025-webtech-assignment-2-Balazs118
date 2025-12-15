@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="navbar navbar-dark sticky-top mb-4">
+        <div class="container">
+            <a class="navbar-brand h1 mb-0" href="#" onclick="showGallery()">GYM equipment store</a>
+            <button class="btn btn-outline-light position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas">
+                Your Cart
+                <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    0
+                </span>
+            </button>
+        </div>
+</nav>
+<div class="offcanvas offcanvas-end" tabindex="-1" id="cartOffcanvas" aria-labelledby="cartOffcanvasLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="cartOffcanvasLabel">Your Cart</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <ul id="cart-items" class="list-group list-group-flush mb-3 flex-grow-1">
+                <li class="list-group-item text-muted text-center mt-5">Your cart is empty.</li>
+            </ul>
+            <div class="mt-auto border-top pt-3">
+                <div class="d-flex justify-content-between mb-3 fw-bold">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal">EUR 0.00</span>
+                </div>
+                <button id="btn-to-checkout" class="btn btn-success w-100 disabled" onclick="proceedToCheckout()">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+</div>
+<div class="container main-container">
+        <div id="view-gallery" class="view-section">
+            <div class="text-center hero-box mb-5">
+                <h1>Go harder than last time!</h1>
+                <p class="lead text-muted">Select your gym equipment down below.</p>
+                <p class="lead text-muted">Don't forget that if you buy more than 3 items, you get a 10% discount!</p>
+            </div>
+            <div class="row g-4" id="product-list">
+                </div>
+        </div>
+        <div id="view-checkout" class="view-section d-none">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <h2 class="mb-4 border-bottom pb-2">Shipping Details</h2>
+                    <p class="text-muted">Enter your details to complete the order.</p>
+                    <form id="checkout-form" novalidate onsubmit="event.preventDefault(); processOrder();">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="fullName" class="form-label">Full Name</label>
+                                <input type="text" class="form-control" id="fullName" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="phone" placeholder="expamle: 1234567890" required>
+                                <div class="invalid-feedback">Phone must contain numbers only.</div>
+                            </div>
+                            <div class="col-12">
+                                <label for="address" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="address" placeholder="Eötvös utca 60" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="city" class="form-label">City</label>
+                                <input type="text" class="form-control" id="city" placeholder="Budapest" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="state" class="form-label">District</label>
+                                <select class="form-select" id="state"  required>
+                                    <option selected disabled value="">Choose one ...</option>
+                                    <option>I.</option>
+                                    <option>II.</option>
+                                    <option>III.</option>
+                                    <option>IV.</option>
+                                    <option>V.</option>
+                                    <option>VI.</option>
+                                    <option>VII.</option>
+                                    <option>VIII.</option>
+                                    <option>IX.</option>
+                                    <option>X.</option>
+                                    <option>XI.</option>
+                                    <option>XII.</option>
+                                    <option>XIII.</option>
+                                    <option>XIV.</option>
+                                    <option>XV.</option>
+                                    <option>XVI.</option>
+                                    <option>XVII.</option>
+                                    <option>XVIII.</option>
+                                    <option>XIX.</option>
+                                    <option>XX.</option>
+                                    <option>XXI.</option>
+                                    <option>XXII.</option>
+                                    <option>XXIII.</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label for="zip" class="form-label">Zip</label>
+                                <input type="text" class="form-control" id="zip" required>
+                                <div class="invalid-feedback">Max 4 chars.</div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" onclick="showGallery()">Back to the main page</button>
+                            <button type="submit" class="btn btn-primary btn-lg">Complete order</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+</div>
+    <div id="view-confirmation" class="view-section d-none">
+            <div class="text-center">
+                <div class="alert alert-success d-inline-block px-5" role="alert">
+                    <h4 class="alert-heading display-6">Thank You!</h4>
+                    <p class="mb-0">Your GYM equipments are on the way.</p>
+                </div>
+                <div class="card mx-auto mt-4 shadow-lg" style="max-width: 500px;">
+                    <div class="card-header bg-dark text-white py-3">
+                        <h5 class="mb-0">Order Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <ul id="summary-list" class="list-group list-group-flush text-start mb-3">
+                            </ul>
+                        
+                        <div class="bg-light p-3 rounded">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span>Subtotal:</span>
+                                <span id="gymitems-subtotal">EUR 0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-1 text-danger" id="gymitems-discount-row">
+                                <span>Discount (10%):</span>
+                                <span id="gymitems-discount">-EUR 0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between mb-3 text-muted">
+                                <span>Tax (5%):</span>
+                                <span id="gymitems-tax">EUR 0.00</span>
+                            </div>
+                            <div class="d-flex justify-content-between fw-bold fs-5 border-top pt-2">
+                                <span>Total Paid:</span>
+                                <span id="gymitems-total" class="text-success">EUR 0.00</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary mt-5 rounded-pill px-4" onclick="location.reload()">Order again!</button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>
